@@ -1,3 +1,4 @@
+// src/components/RecipeCard.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import type { Recipe } from '../types/Recipe';

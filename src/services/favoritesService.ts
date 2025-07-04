@@ -1,19 +1,18 @@
-const FAVORITES_KEY = 'recetas_favoritas';
-
+// src/services/favoritesService.ts
 export const getFavorites = (): number[] => {
-  const stored = localStorage.getItem(FAVORITES_KEY);
-  return stored ? JSON.parse(stored) : [];
+  const favorites = localStorage.getItem('favoritos');
+  return favorites ? JSON.parse(favorites) : [];
 };
 
 export const addFavorite = (id: number): void => {
   const favorites = getFavorites();
   if (!favorites.includes(id)) {
-    favorites.push(id);
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+    localStorage.setItem('favoritos', JSON.stringify([...favorites, id]));
   }
 };
 
 export const removeFavorite = (id: number): void => {
-  const favorites = getFavorites().filter(favId => favId !== id);
-  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  let favorites = getFavorites();
+  favorites = favorites.filter(favId => favId !== id);
+  localStorage.setItem('favoritos', JSON.stringify(favorites));
 };
