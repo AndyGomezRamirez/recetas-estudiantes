@@ -3,6 +3,8 @@ import React, { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import type { Recipe } from '../types/Recipe';
 import recetasData from '../data/recetas.json';
+import { getFavorites, addFavorite, removeFavorite } from '../services/favoritesService';
+
 
 interface RecipeContextType {
   recetas: Recipe[];
@@ -22,6 +24,7 @@ interface RecipeProviderProps {
 export const RecipeProvider: React.FC<RecipeProviderProps> = ({ children }) => {
   const [recetas, setRecetas] = useState<Recipe[]>(recetasData.recetas as Recipe[]);
   const [favoritos, setFavoritos] = useState<number[]>([]);
+  
 
   // useEffect para cargar favoritos del localStorage
   useEffect(() => {

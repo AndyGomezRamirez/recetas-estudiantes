@@ -2,8 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useRecipes } from '../hooks/useRecipes';
 import RecipeCard from '../components/RecipeCard';
+import { useState } from 'react';
+import SearchBar from '../components/SearchBar';
 
 const HomePage: React.FC = () => {
+  const [busqueda, setBusqueda] = useState('');
   const { recetas } = useRecipes();
 
   // Obtener las recetas más valoradas (top 3)
@@ -15,6 +18,12 @@ const HomePage: React.FC = () => {
   const recetasRapidas = recetas
     .filter(receta => receta.tiempo <= 20)
     .slice(0, 3);
+
+  const recetasFiltradas = busqueda
+  ? recetas.filter(receta =>
+      receta.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    )
+  : [];
 
   return (
     <div className="home-page">
@@ -34,6 +43,21 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+      <SearchBar onSearch={setBusqueda} />
+        {busqueda && (
+          <section className="search-results">
+            <h2 className="section-title">🔍 Resultados de búsqueda para "{busqueda}"</h2>
+              {recetasFiltradas.length > 0 ? (
+              <div className="recipes-grid">
+                {recetasFiltradas.map(receta => (
+                <RecipeCard key={receta.id} recipe={receta} />
+                ))}
+              </div>
+              ) : (
+              <p>No se encontraron recetas con ese nombre.</p>
+              )}
+          </section>
+)}
 
       <section className="featured-section">
         <h2 className="section-title">⭐ Recetas Más Valoradas</h2>
